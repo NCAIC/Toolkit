@@ -8,7 +8,7 @@ export enum SetResultType {
 
 export interface Config {
     title: string;
-    teams: Record<string, { source?: string; color?: string }>;
+    teams: Record<string, { source?: string | null; color?: string }>;
     delay: {
         step: number;
         set: number;

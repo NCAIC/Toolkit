@@ -15,9 +15,16 @@ export default function init(opts: OptionValues, cmd: Command) {
         config_path,
         yaml.dump(
             {
+                title: "測試模式 Test Mode",
                 teams: {
-                    "Team A": null,
-                    "Team B": null,
+                    "Team A": {
+                        source: "",
+                        color: "#1d4ed8",
+                    },
+                    "Team B": {
+                        source: "",
+                        color: "#e11d48",
+                    },
                 },
                 delay: { step: 200, set: 2_000 },
                 competition: {
@@ -30,7 +37,7 @@ export default function init(opts: OptionValues, cmd: Command) {
                     timeout: { step: 999_999_999, set: 999_999_999 },
                 },
             } as Config,
-            { indent: 4 },
+            { indent: 4, quotingType: '"' },
         ),
     );
 

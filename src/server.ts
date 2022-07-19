@@ -85,7 +85,7 @@ export function server(config: Config, { port = 52022 } = {}) {
 
     const teams: Team[] = Object.entries(config.teams).map(([name, { source, color }]) => ({
         name,
-        cmd: source,
+        cmd: source ?? undefined,
         color,
     }));
 
