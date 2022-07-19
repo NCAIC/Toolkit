@@ -1,0 +1,35 @@
+{
+    "name": "ncaic",
+    "version": "0.3.0",
+    "description": "A collection of tools for NCAIC competitors.",
+    "main": "index.js",
+    "type": "module",
+    "bin": "dist/index.js",
+    "scripts": {
+        "start": "node dist/index.js",
+        "build": "tsup",
+        "format": "prettier --write '**/*.{js,ts}' '!dist'"
+    },
+    "files": [
+        "dist",
+        "env"
+    ],
+    "keywords": ["NCAIC"],
+    "author": "JacobLinCool <jacoblincool@gmail.com> (https://github.com/JacobLinCool)",
+    "license": "MIT",
+    "dependencies": {
+        "commander": "^9.3.0",
+        "js-yaml": "^4.1.0",
+        "semver-regex": "^4.0.5",
+        "ws": "^8.8.0",
+        "yup": "^0.32.11"
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^3.2.0",
+        "@types/js-yaml": "^4.0.5",
+        "@types/ws": "^8.5.3",
+        "esno": "^0.16.3",
+        "prettier": "^2.7.1",
+        "tsup": "^6.1.3"
+    }
+}
