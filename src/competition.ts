@@ -92,7 +92,7 @@ export class GameSet extends EventEmitter {
             const time = end_time - start_time;
             this.time[idx] += time;
 
-            [x, y] = sub.output[1]?.split(" ").map((s) => parseInt(s, 10)) ?? [-1, -1];
+            [y, x] = sub.output[1]?.split(" ").map((s) => parseInt(s, 10)) ?? [-1, -1];
         } else {
             const promise = new Promise<[number, number]>((resolve) => {
                 this.put = (x, y) => resolve([x, y]);
@@ -133,7 +133,7 @@ export class GameSet extends EventEmitter {
             x >= BOARD_SIZE ||
             y < 0 ||
             y >= BOARD_SIZE ||
-            this.board[x][y] !== COLOR.EMPTY
+            this.board[y][x] !== COLOR.EMPTY
         ) {
             this.result.win = {
                 team: this.teams[(idx + 1) % 2],
@@ -145,7 +145,7 @@ export class GameSet extends EventEmitter {
             return;
         }
 
-        this.board[x][y] = idx ? COLOR.WHITE : COLOR.BLACK;
+        this.board[y][x] = idx ? COLOR.WHITE : COLOR.BLACK;
         this.result.history.push([x, y]);
 
         this.emit("set-update", { stats: this.result });
