@@ -122,6 +122,17 @@ export class GameSet extends EventEmitter {
             this.time[idx] += time;
         }
 
+        if (this.time[idx] >= this.config.timeout.set) {
+            this.result.win = {
+                team: this.teams[(idx + 1) % 2],
+                reason: SetResultType.timeout,
+                stones: [],
+            };
+            console.log(`Timed out: ${team.name}`);
+            this.emit("set-end", { stats: this.result });
+            return;
+        }
+
         if (process.env.VERBOSE) {
             console.log(`${team.name} played ${x}, ${y}`);
         }
@@ -160,6 +171,11 @@ export class GameSet extends EventEmitter {
             };
             this.emit("set-end", { stats: this.result });
         } else if (this.board.flat(2).every((c) => c !== COLOR.EMPTY)) {
+            this.result.win = {
+                reason: SetResultType.draw,
+                team: this.teams[-1],
+                stones: [],
+            };
             this.emit("set-end", { stats: this.result });
         } else {
             this.turn++;
