@@ -160,7 +160,7 @@ export function server(config: Config, { port = 52022 } = {}) {
         clients.forEach((ws) => {
             ws.send(
                 JSON.stringify({
-                    type: "set-start",
+                    type: "set-update",
                     payload: { ...payload, clients: clients.size },
                 }),
             );
@@ -170,7 +170,7 @@ export function server(config: Config, { port = 52022 } = {}) {
         clients.forEach((ws) => {
             ws.send(
                 JSON.stringify({
-                    type: "set-start",
+                    type: "set-end",
                     payload: { ...payload, clients: clients.size },
                 }),
             );
