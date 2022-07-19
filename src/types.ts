@@ -71,7 +71,9 @@ export interface Payload {
             set: number;
             remaining: number;
         };
+        stone: number;
     }[];
+    now: number;
     sets: {
         type: SetResultType;
         color?: string;

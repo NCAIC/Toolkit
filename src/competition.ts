@@ -342,17 +342,19 @@ export class Competition extends EventEmitter {
     public async start() {
         const payload: Payload = {
             title: this.config.title,
-            teams: this.teams.map((team) => ({
+            teams: this.teams.map((team, idx) => ({
                 ...(team as Required<Team>),
                 time: {
                     total: 0,
                     set: this.config.competition.timeout.set,
                     remaining: this.config.competition.timeout.set,
                 },
+                stone: +!idx,
             })),
             board: this.sets[0].board,
             emphasized: [],
             sets: this.sets.map(() => ({ type: SetResultType.none })),
+            now: 0,
             clients: 0,
         };
 
@@ -390,7 +392,10 @@ export class Competition extends EventEmitter {
                     team.time.remaining =
                         team.time.set -
                         stats.time[stats.teams.findIndex((t) => t.name === team.name)];
+
+                    team.stone = +!team.stone;
                 }
+                payload.now = stats.board.flat().filter((v) => v !== COLOR.EMPTY).length % 2;
                 this.emit("set-start", copy(payload));
             });
             set.on("set-update", ({ stats }: { stats: Result }) => {
@@ -399,7 +404,7 @@ export class Competition extends EventEmitter {
                     y,
                     type: 1,
                 }));
-                payload.board = stats.board;
+                payload.board = copy(stats.board);
                 for (const team of payload.teams) {
                     team.time.total =
                         this.results
@@ -413,6 +418,7 @@ export class Competition extends EventEmitter {
                         team.time.set -
                         stats.time[stats.teams.findIndex((t) => t.name === team.name)];
                 }
+                payload.now = stats.board.flat().filter((v) => v !== COLOR.EMPTY).length % 2;
                 this.emit("set-update", copy(payload));
             });
             set.on("set-end", ({ stats }: { stats: Result }) => {
@@ -431,6 +437,7 @@ export class Competition extends EventEmitter {
                         team.time.set -
                         stats.time[stats.teams.findIndex((t) => t.name === team.name)];
                 }
+                payload.now = -1;
                 this.emit("set-end", copy(payload));
             });
 
