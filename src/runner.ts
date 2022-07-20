@@ -1,7 +1,7 @@
 import path from "node:path";
 
 export const runners: Record<string, string> = {
-    "": `./agent`,
+    "": process.platform === "win32" ? ".\\agent" : `./agent`,
     js: `node agent.js`,
     py: `python -B agent.py`,
 } as const;
