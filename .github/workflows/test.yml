@@ -1,0 +1,65 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request_target:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        node:
+          - "16"
+          - "18"
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    name: "${{ matrix.os }} - Node.js ${{ matrix.node }}"
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: Install esbuild for TypeScript support
+        run: npm i -g esbuild && esbuild --version
+
+      - name: Build NCAIC CLI Toolkit
+        run: npx -y pnpm i && npm run build
+
+      - name: Check NCAIC Version
+        run: node dist/index.js --version
+
+      - name: Check Language Support
+        run: node dist/index.js check
+
+      - name: Test C program
+        run: node dist/index.js test programs/rand.c
+
+      - name: Test Go program
+        run: node dist/index.js test programs/rand.go
+
+      - name: Test JS program
+        run: node dist/index.js test programs/rand.js
+
+      - name: Test PY program
+        run: node dist/index.js test programs/rand.py
+
+      - name: Test RS program
+        run: node dist/index.js test programs/rand.rs
+
+      - name: Test TS program
+        run: node dist/index.js test programs/rand.ts
