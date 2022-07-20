@@ -42,6 +42,11 @@ jobs:
       - name: Install esbuild for TypeScript support
         run: npm i -g esbuild && esbuild --version
 
+      - name: Install Python 3 for Python support
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
       - name: Build NCAIC CLI Toolkit
         run: npx -y pnpm i && npm run build
 

@@ -11,8 +11,7 @@ def user(board, stone, time):
 
 
 def main():
-    raw = input()
-    splits = raw.split(", ")
+    splits = input().split(", ")
     board = [[]] * 15
     for row in range(15):
         board[row] = [0] * 15
