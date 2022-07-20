@@ -17,6 +17,26 @@ export function server(config: Config, { port = 52022 } = {}) {
     let put_stone: undefined | ((x: number, y: number) => void);
     let started = false;
 
+    const teams: Team[] = Object.entries(config.teams).map(([name, { source, color }]) => ({
+        name,
+        cmd: source ?? undefined,
+        color,
+    }));
+
+    if (!teams[0].color && typeof teams[1].color === "string") {
+        teams[0].color = complimentary(teams[1].color);
+    } else if (!teams[0].color) {
+        teams[0].color = "#" + random_string(6, "0123456789abcdef");
+    }
+
+    while (teams.length < 2) {
+        teams.push({ name: `Team ${teams.length}` });
+    }
+
+    if (!teams[1].color) {
+        teams[1].color = complimentary(teams[0].color);
+    }
+
     const clients = new Set<WebSocket>();
     const wss = new WebSocketServer({ port }).on("connection", (ws) => {
         clients.add(ws);
@@ -25,7 +45,21 @@ export function server(config: Config, { port = 52022 } = {}) {
             ws.send(
                 JSON.stringify({
                     type: "client-count",
-                    payload: { clients: clients.size, started },
+                    payload: {
+                        clients: clients.size,
+                        started,
+                        title: config.title,
+                        teams: teams.map((t, i) => ({
+                            ...t,
+                            cmd: undefined,
+                            time: {
+                                total: 0,
+                                set: config.competition.timeout.set,
+                                remaining: config.competition.timeout.set,
+                            },
+                            stone: i,
+                        })),
+                    } as Partial<Payload>,
                 }),
             );
         });
@@ -82,26 +116,6 @@ export function server(config: Config, { port = 52022 } = {}) {
             }
         });
     });
-
-    const teams: Team[] = Object.entries(config.teams).map(([name, { source, color }]) => ({
-        name,
-        cmd: source ?? undefined,
-        color,
-    }));
-
-    if (!teams[0].color && typeof teams[1].color === "string") {
-        teams[0].color = complimentary(teams[1].color);
-    } else if (!teams[0].color) {
-        teams[0].color = "#" + random_string(6, "0123456789abcdef");
-    }
-
-    while (teams.length < 2) {
-        teams.push({ name: `Team ${teams.length}` });
-    }
-
-    if (!teams[1].color) {
-        teams[1].color = complimentary(teams[0].color);
-    }
 
     const competition = new Competition(teams as [Team, Team], config);
     competition.on("competition-start", (payload) => {
