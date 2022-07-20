@@ -19,7 +19,7 @@ export function server(config: Config, { port = 52022 } = {}) {
 
     const teams: Team[] = Object.entries(config.teams).map(([name, { source, color }]) => ({
         name,
-        cmd: source ?? undefined,
+        exe: source ?? undefined,
         color,
     }));
 
@@ -51,7 +51,7 @@ export function server(config: Config, { port = 52022 } = {}) {
                         title: config.title,
                         teams: teams.map((t, i) => ({
                             ...t,
-                            cmd: undefined,
+                            exe: undefined,
                             time: {
                                 total: 0,
                                 set: config.competition.timeout.set,

@@ -74,9 +74,9 @@ export class GameSet extends EventEmitter {
 
         let x: number | undefined, y: number | undefined;
         let time = 0;
-        if (team.cmd) {
+        if (team.exe) {
             const start_time = Date.now();
-            const sub = spawnSync(runner(team.cmd), {
+            const sub = spawnSync(runner(team.exe), {
                 shell: true,
                 encoding: "utf8",
                 input,
@@ -85,8 +85,9 @@ export class GameSet extends EventEmitter {
                     0,
                 ),
                 stdio: ["pipe", "pipe", process.env.VERBOSE ? "inherit" : "ignore"],
-                cwd: path.dirname(team.cmd),
+                cwd: path.dirname(team.exe),
             });
+            // console.log(sub.stdout);
             const end_time = Date.now();
 
             const time = end_time - start_time;

@@ -13,13 +13,24 @@ export function compile(source: string) {
 
     const dir = create_env(source);
 
-    const commands: Record<string, string> = {
+    const commands: Record<string, string | (() => void)> = {
         c: `gcc --std=c11 -lm -O2 -o agent ${source}`,
         cpp: `g++ --std=c++11 -lm -O2 -o agent ${source}`,
         go: `go build -o agent ${source}`,
-        js: `mv ${path.resolve(dir, path.basename(source))} agent.js`,
-        py: `mv ${path.resolve(dir, path.basename(source))} agent.py`,
-        rs: `cargo build --release --bin agent && mv target/release/agent agent`,
+        js: () => {
+            fs.renameSync(path.resolve(dir, path.basename(source)), path.resolve(dir, "agent.js"));
+        },
+        py: () => {
+            fs.renameSync(path.resolve(dir, path.basename(source)), path.resolve(dir, "agent.py"));
+        },
+        rs: () => {
+            spawnSync("cargo build --release --bin agent", {
+                cwd: dir,
+                shell: true,
+                stdio: process.env.VERBOSE ? "inherit" : "ignore",
+            });
+            fs.renameSync(path.resolve(dir, "target/release/agent"), path.resolve(dir, "agent"));
+        },
         ts: `esbuild --bundle --platform=node --outfile=agent.js ${source}`,
     };
 
@@ -29,11 +40,16 @@ export function compile(source: string) {
         if (process.env.VERBOSE) {
             console.log(`Running: ${command}`);
         }
-        spawnSync(command, {
-            cwd: dir,
-            shell: true,
-            stdio: process.env.VERBOSE ? "inherit" : "ignore",
-        });
+
+        if (typeof command === "string") {
+            spawnSync(command, {
+                cwd: dir,
+                shell: true,
+                stdio: process.env.VERBOSE ? "inherit" : "ignore",
+            });
+        } else {
+            command();
+        }
     } else if (process.env.VERBOSE) {
         console.log(`No compile (transpile) command is required for ${ext}`);
     }

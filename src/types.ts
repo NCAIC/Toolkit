@@ -34,7 +34,7 @@ export type SetEvent = "set-start" | "set-update" | "set-end";
 export interface Team {
     name: string;
     color?: string;
-    cmd?: string;
+    exe?: string;
 }
 
 export interface Result {
