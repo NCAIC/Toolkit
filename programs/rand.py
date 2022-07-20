@@ -1,25 +1,6 @@
-from simplelib import *
 import random
 
 [BOARDSIZE, EMPTY, BLACK, WHITE] = [15, 0, 1, 2]
-
-'''
-user:
-    輸入目前的棋盤跟你是黑棋或白棋(1 or 2)，以及剩餘的時間
-    回傳你要下的 index: (row, col)
-    param:
-        board: list[list[int]]
-            board.size == board[0].size == BOARDSIZE
-        myStone: int
-            myStone in [EMPTY, BLACK, WHITE] (0, 1, 2)
-        remain_time: float
-            remaining time(unit: second)
-    return: row, column
-定義請看 variables.py
-輔助函式請看 simplelib.py
-整個 user 都可以改，除此之外都不要改                                                                
-NOTE: 若要debug，請使用 print("message", file=sys.stderr)，不要 print 到stdout
-'''
 
 
 def user(board, stone, time):

@@ -11,14 +11,6 @@ var (
 	time  float64
 )
 
-func main() {
-	parse()
-
-	var x, y = run()
-
-	fmt.Printf("%d, %d\n", x, y)
-}
-
 func run() (int32, int32) {
 	var x, y = int32(0), int32(0)
 
@@ -27,6 +19,14 @@ func run() (int32, int32) {
 	}
 
 	return x, y
+}
+
+func main() {
+	parse()
+
+	var x, y = run()
+
+	fmt.Printf("%d, %d\n", y, x)
 }
 
 func parse() {
@@ -39,6 +39,4 @@ func parse() {
 	}
 
 	fmt.Scanf("%d, %f", &stone, &time)
-
-	// fmt.Fprintln(os.Stderr, board, stone, time)
 }

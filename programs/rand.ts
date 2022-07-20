@@ -1,6 +1,6 @@
-const [BOARDSIZE, EMPTY, BLACK, WHITE] = [15, 0, 1, 2];
+const [BOARDSIZE, EMPTY, BLACK, WHITE] = [15, 0, 1, 2] as const;
 
-function run(board, stone, timer) {
+function run(board: number[][], stone: number, timer: number) {
     let [x, y] = [0, 0];
 
     while (board[y][x] !== EMPTY) {
@@ -14,7 +14,7 @@ function run(board, stone, timer) {
 process.stdin.on("data", (data) => {
     const slices = data.toString().split(/, /g);
 
-    const board = [];
+    const board: number[][] = [];
     for (let i = 0; i < BOARDSIZE; i++) {
         board.push([]);
         for (let j = 0; j < BOARDSIZE; j++) {
