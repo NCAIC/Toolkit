@@ -13,10 +13,12 @@ export function compile(source: string) {
 
     const dir = create_env(source);
 
+    const target = process.platform === "win32" ? "agent.exe" : "agent";
+
     const commands: Record<string, string | (() => void)> = {
-        c: `gcc --std=c11 -lm -O2 -o agent ${source}`,
-        cpp: `g++ --std=c++11 -lm -O2 -o agent ${source}`,
-        go: `go build -o agent ${source}`,
+        c: `gcc --std=c11 -lm -O2 -o ${target} ${source}`,
+        cpp: `g++ --std=c++11 -lm -O2 -o ${target} ${source}`,
+        go: `go build -o ${target} ${source}`,
         js: () => {
             fs.renameSync(path.resolve(dir, path.basename(source)), path.resolve(dir, "agent.js"));
         },
@@ -29,7 +31,7 @@ export function compile(source: string) {
                 shell: true,
                 stdio: process.env.VERBOSE ? "inherit" : "ignore",
             });
-            fs.renameSync(path.resolve(dir, "target/release/agent"), path.resolve(dir, "agent"));
+            fs.renameSync(path.resolve(dir, "target/release", target), path.resolve(dir, target));
         },
         ts: `esbuild --bundle --platform=node --outfile=agent.js ${source}`,
     };
