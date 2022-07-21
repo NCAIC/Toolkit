@@ -47,11 +47,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install GCC for C/C++ support
-        uses: aminya/setup-cpp@v1
-        with:
-          compiler: gcc
-
       - name: Build NCAIC CLI Toolkit
         run: npx -y pnpm i && npm run build
 
