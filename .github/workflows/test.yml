@@ -89,6 +89,12 @@ jobs:
       - name: Build NCAIC CLI Toolkit
         run: npx -y pnpm i && npm run build
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build Docker Image
         run: |
           version=$(git describe --tags --abbrev=0)
