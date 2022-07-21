@@ -64,7 +64,7 @@ export function check_ts_version() {
 export function check_c_version() {
     try {
         if (!cache.has("c")) {
-            const raw = run("gcc --version").split("\n")[0];
+            const raw = run("gcc --version").replace(/\s+/g, " ");
             const result = semver().exec(raw)?.[0];
             if (result) {
                 cache.set("c", (raw.includes("clang") ? "clang " : "gcc ") + result);
@@ -80,7 +80,7 @@ export function check_c_version() {
 export function check_cpp_version() {
     try {
         if (!cache.has("cpp")) {
-            const raw = run("g++ --version").split("\n")[0];
+            const raw = run("g++ --version").replace(/\s+/g, " ");
             const result = semver().exec(raw)?.[0];
             if (result) {
                 cache.set("cpp", (raw.includes("clang") ? "clang " : "g++ ") + result);

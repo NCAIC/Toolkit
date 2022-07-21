@@ -83,7 +83,10 @@ export function compile(source: string) {
  * @returns The absolute path of the temporary directory.
  */
 export function create_env(source: string) {
-    const dir = path.resolve(tmpdir(), Math.random().toString().slice(2));
+    const dir = path.resolve(
+        tmpdir(),
+        "ncaic-" + Math.random().toString().slice(2, 8).padEnd(6, "0"),
+    );
     if (fs.existsSync(dir)) {
         fs.rmSync(dir, { recursive: true });
     }
