@@ -7,6 +7,7 @@ import init from "./commands/init";
 import verify from "./commands/verify";
 import test from "./commands/test";
 import run from "./commands/run";
+import env from "./commands/env";
 
 const package_info = JSON.parse(
     fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8"),
@@ -15,6 +16,12 @@ const package_info = JSON.parse(
 const program = new commander.Command().version(`${package_info.name} ${package_info.version}`);
 
 program.command("check").description("check for language support").action(check);
+
+program
+    .command("env")
+    .description("list created all environments")
+    .option("-r, --remove", "remove all environments after listing")
+    .action(env);
 
 program
     .command("init")
