@@ -142,7 +142,13 @@ export function check_rust_version() {
 }
 
 function run(command: string) {
-    return execSync(command, { stdio: ["ignore", "pipe", "ignore"] })
+    const result = execSync(command, { stdio: ["ignore", "pipe", "ignore"] })
         .toString()
         .trim();
+
+    if (process.env.VERBOSE) {
+        console.log(`${command} => ${result}`);
+    }
+
+    return result;
 }

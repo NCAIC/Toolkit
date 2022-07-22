@@ -73,3 +73,29 @@ jobs:
 
       - name: Test TS program
         run: node dist/index.js test programs/rand.ts
+
+  docker-image:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.2.2
+        with:
+          version: latest
+
+      - name: Build NCAIC CLI Toolkit
+        run: npx -y pnpm i && npm run build
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Image
+        run: |
+          version=$(git describe --tags --abbrev=0)
+          docker buildx build --platform linux/arm64/v8,linux/amd64 -t "jacoblincool/ncaic:$version" -t jacoblincool/ncaic:latest .
