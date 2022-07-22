@@ -1,6 +1,12 @@
 FROM golang:latest as go-env
 FROM rust:latest as rust-env
 
+FROM node:lts as builder
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+WORKDIR /app
+COPY . .
+RUN npx -y pnpm i && npm run build
+
 FROM node:lts
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
@@ -17,7 +23,7 @@ ENV PATH=$PATH:/usr/local/cargo/bin
 RUN rustup default stable
 
 WORKDIR /app
-COPY . .
-RUN npx -y pnpm i
+COPY --from=builder /app .
+RUN npx -y pnpm i -P
 
 ENTRYPOINT [ "node", "dist/index.js" ]
