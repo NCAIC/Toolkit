@@ -1,6 +1,6 @@
 {
     "name": "ncaic",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "A collection of tools for NCAIC competitors.",
     "main": "index.js",
     "type": "module",
@@ -12,7 +12,8 @@
     },
     "files": [
         "dist",
-        "env"
+        "env",
+        "programs"
     ],
     "keywords": ["NCAIC"],
     "author": "JacobLinCool <jacoblincool@gmail.com> (https://github.com/JacobLinCool)",
