@@ -18,6 +18,22 @@ npm i -g ncaic
 
 You can then use `ncaic check` to check the language support on your system.
 
+### Directly run from `npx` or `pnpm dlx`
+
+Requirements: Node.js, PNPM (optional)
+
+You can also run it directly using a single `npx` or `pnpm dlx` command.
+
+```sh
+npx -y ncaic
+```
+
+or
+
+```sh
+pnpm dlx ncaic
+```
+
 ### Using Docker Image
 
 Requirements: Docker
@@ -74,4 +90,12 @@ ncaic init
 
 ```sh
 ncaic run
+```
+
+### Run a performance test
+
+It is useful to find the performance gap between your computer and the competition server.
+
+```sh
+ncaic perf
 ```
