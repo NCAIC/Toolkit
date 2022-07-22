@@ -8,6 +8,7 @@ import verify from "./commands/verify";
 import test from "./commands/test";
 import run from "./commands/run";
 import env from "./commands/env";
+import speed from "./commands/speed";
 
 const package_info = JSON.parse(
     fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8"),
@@ -16,6 +17,7 @@ const package_info = JSON.parse(
 const program = new commander.Command().version(`${package_info.name} ${package_info.version}`);
 
 program.command("check").description("check for language support").action(check);
+program.command("speed").description("run performance tests").action(speed);
 
 program
     .command("env")
