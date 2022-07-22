@@ -75,3 +75,11 @@ ncaic init
 ```sh
 ncaic run
 ```
+
+### Run a performance test
+
+It is useful to find the performance gap between your computer and the competition server.
+
+```sh
+ncaic perf
+```
