@@ -1,6 +1,6 @@
 {
     "name": "ncaic",
-    "version": "0.3.8",
+    "version": "0.3.9",
     "description": "A collection of tools for NCAIC competitors.",
     "main": "index.js",
     "type": "module",

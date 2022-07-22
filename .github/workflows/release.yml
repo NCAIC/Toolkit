@@ -13,10 +13,14 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Check if Tag on Main
         run: |
+          git checkout main
           branch=$(git branch main --contains ${{ github.ref }})
+          git checkout ${{ github.ref }}
           if [ -z $branch ]; then
               echo "Tag ${{ github.ref }} is not contained in the main branch."
               exit 1
@@ -52,10 +56,14 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Check if Tag on Main
         run: |
+          git checkout main
           branch=$(git branch main --contains ${{ github.ref }})
+          git checkout ${{ github.ref }}
           if [ -z $branch ]; then
               echo "Tag ${{ github.ref }} is not contained in the main branch."
               exit 1
@@ -83,10 +91,14 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Check if Tag on Main
         run: |
+          git checkout main
           branch=$(git branch main --contains ${{ github.ref }})
+          git checkout ${{ github.ref }}
           if [ -z $branch ]; then
               echo "Tag ${{ github.ref }} is not contained in the main branch."
               exit 1
