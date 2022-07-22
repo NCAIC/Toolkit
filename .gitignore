@@ -130,3 +130,5 @@ dist
 
 competitions/
 config.yml
+
+env/rs/target/
