@@ -132,3 +132,8 @@ competitions/
 config.yml
 
 env/rs/target/
+
+.github/
+scripts/
+
+.git/
