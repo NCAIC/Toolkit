@@ -102,10 +102,15 @@ void parse(int board[], int *stone, double *time)
 {
     string S, T;
     getline(cin, S);
+
     stringstream X(S);
-    for (size_t i = 0; i < 227; i++)
+    for (size_t i = 0; i < 225; i++)
     {
         getline(X, T, ',');
         board[i] = stoi(T);
     }
+    getline(X, T, ',');
+    *stone = stoi(T);
+    getline(X, T, ',');
+    *time = stod(T);
 }
