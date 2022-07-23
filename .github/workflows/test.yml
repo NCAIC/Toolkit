@@ -23,6 +23,8 @@ jobs:
 
     name: "${{ matrix.os }} - Node.js ${{ matrix.node }}"
     runs-on: ${{ matrix.os }}
+    env:
+      VERBOSE: 1
 
     steps:
       - name: Checkout Repository
