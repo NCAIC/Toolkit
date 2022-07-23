@@ -12,7 +12,10 @@ export default function setup(opts: OptionValues, cmd: Command) {
             cwd: dir,
             stdio: process.env.VERBOSE ? "inherit" : "ignore",
         });
-        fs.rmSync(path.resolve(dir, "target", "release", "agent"));
+
+        const exe = process.platform === "win32" ? "agent.exe" : "agent";
+        fs.rmSync(path.resolve(dir, "target", "release", exe), { force: true });
+        fs.rmSync(path.resolve(dir, "target", "release", "deps", exe), { force: true });
     } catch (err) {
         if (process.env.VERBOSE) {
             console.error(
