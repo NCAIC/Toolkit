@@ -9,6 +9,7 @@ import test from "./commands/test";
 import run from "./commands/run";
 import env from "./commands/env";
 import perf from "./commands/perf";
+import setup from "./commands/setup";
 
 const package_info = JSON.parse(
     fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8"),
@@ -18,6 +19,7 @@ const program = new commander.Command().version(`${package_info.name} ${package_
 
 program.command("check").description("check for language support").action(check);
 program.command("perf").description("run performance tests").action(perf);
+program.command("setup").description("setup (optional)").action(setup);
 
 program
     .command("env")

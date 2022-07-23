@@ -9,7 +9,7 @@
         "start": "node dist/index.js",
         "build": "tsup",
         "format": "prettier --write '**/*.{js,ts}' '!dist'",
-        "postinstall": "cd env/rs && cargo build --release --bin agent && rm target/release/agent && cd ../.. || true"
+        "postinstall": "node dist/index.js setup"
     },
     "files": [
         "dist",
