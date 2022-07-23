@@ -61,6 +61,9 @@ jobs:
       - name: Test C program
         run: node dist/index.js test programs/rand.c
 
+      - name: Test C++ program
+        run: node dist/index.js test programs/rand.cpp
+
       - name: Test Go program
         run: node dist/index.js test programs/rand.go
 
