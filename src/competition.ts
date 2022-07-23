@@ -1,7 +1,7 @@
 import { spawnSync } from "node:child_process";
 import EventEmitter from "node:events";
 import path from "node:path";
-import { runner } from "./runner";
+import { run_exe } from "./runner";
 import { COLOR, Config, Result, Team, Payload, SetResultType } from "./types";
 import { copy, sleep } from "./utils";
 
@@ -75,25 +75,32 @@ export class GameSet extends EventEmitter {
         let x: number | undefined, y: number | undefined;
         let time = 0;
         if (team.exe) {
-            const start_time = Date.now();
-            const sub = spawnSync(runner(team.exe), {
-                shell: true,
-                encoding: "utf8",
-                input,
-                timeout: Math.max(
-                    Math.min(this.config.timeout.step, this.config.timeout.set - this.time[idx]),
-                    0,
-                ),
-                stdio: ["pipe", "pipe", process.env.VERBOSE ? "inherit" : "ignore"],
-                cwd: path.dirname(team.exe),
-            });
-            // console.log(sub.stdout);
-            const end_time = Date.now();
+            try {
+                const run = run_exe(team.exe, {
+                    shell: true,
+                    input,
+                    timeout: Math.max(
+                        Math.min(
+                            this.config.timeout.step,
+                            this.config.timeout.set - this.time[idx],
+                        ),
+                        0,
+                    ),
+                    memory: 1024,
+                    stdio: ["pipe", "pipe", process.env.VERBOSE ? "inherit" : "ignore"],
+                    cwd: path.dirname(team.exe),
+                });
 
-            const time = end_time - start_time;
-            this.time[idx] += time;
+                const { output, time } = await run();
 
-            [y, x] = sub.output[1]?.split(" ").map((s) => parseInt(s, 10)) ?? [-1, -1];
+                this.time[idx] += time;
+
+                [y, x] = output.split(" ").map((s) => parseInt(s, 10)) ?? [-1, -1];
+            } catch (err) {
+                if (process.env.VERBOSE) {
+                    console.error(err);
+                }
+            }
         } else {
             const promise = new Promise<[number, number]>((resolve) => {
                 this.put = (x, y) => resolve([x, y]);

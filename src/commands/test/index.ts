@@ -1,9 +1,8 @@
 import path from "node:path";
 import fs from "node:fs";
-import { spawnSync } from "node:child_process";
 import { OptionValues, Command } from "commander";
 import { compile } from "../../compile";
-import { runner } from "../../runner";
+import { run_exe } from "../../runner";
 
 export default async function test(source: string, opts: OptionValues, cmd: Command) {
     if (typeof source !== "string") {
@@ -28,26 +27,26 @@ export default async function test(source: string, opts: OptionValues, cmd: Comm
     board[0][0] = 1;
     board[0][1] = 2;
 
-    const run = runner(exe);
+    const run = run_exe(exe, {
+        shell: true,
+        input: `${board.flat().join(", ")}, 1, 123.321`,
+        timeout: 120_000,
+        memory: 1024,
+        stdio: ["pipe", "pipe", "inherit"],
+        cwd: dir,
+    });
 
     if (process.env.VERBOSE) {
         console.log(`Running: ${run}`);
     }
 
-    const output = spawnSync(run, {
-        shell: true,
-        encoding: "utf8",
-        input: `${board.flat().join(", ")}, 1, 123.321`,
-        timeout: 120_000,
-        stdio: ["pipe", "pipe", "inherit"],
-        cwd: dir,
-    });
+    const program = await run();
 
-    if (!output.stdout) {
+    if (!program.output) {
         throw new Error("No output");
     }
 
-    const [x, y] = output.stdout.split(" ").map((n) => parseInt(n, 10));
+    const [x, y] = program.output.split(" ").map((n) => parseInt(n, 10));
     if (
         x === undefined ||
         y === undefined ||
@@ -57,7 +56,7 @@ export default async function test(source: string, opts: OptionValues, cmd: Comm
         y >= 15 ||
         board[x][y] !== 0
     ) {
-        throw new Error("Invalid Output. Received: " + output.stdout);
+        throw new Error("Invalid Output. Received: " + program.output);
     }
 
     console.log("Test Passed.");
