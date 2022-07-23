@@ -1,4 +1,6 @@
+import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
+import pidusage from "pidusage";
 
 /**
  * Deeply clones an object, using JSON serialization and deserialization.
@@ -148,4 +150,81 @@ export function complimentary(hex: string): string {
 
     const rgb = new_b | (new_g << 8) | (new_r << 16);
     return "#" + (0x1000000 | rgb).toString(16).substring(1);
+}
+
+/**
+ * Run a command and return the output.
+ * @param command The command to run.
+ * @param args The arguments to pass to the command.
+ * @param options The options to pass to child_process.spawn, with the following additions:
+ * - `memory`: The memory limit in MB.
+ * - `interval`: The interval in milliseconds to check for memory usage.
+ */
+export function run(
+    command: string,
+    args: string[],
+    options: Parameters<typeof spawn>["2"] & {
+        memory?: number;
+        interval?: number;
+        input?: string;
+        light?: boolean;
+    } = {},
+): Promise<{
+    output: string;
+    time: number;
+    memory: number;
+    cpu: number;
+}> {
+    return new Promise((resolve, reject) => {
+        const child = spawn(command, args, options);
+
+        const start_time = Date.now();
+
+        let output = "";
+        child.stdout?.on("data", (data) => (output += data.toString()));
+        child.stderr?.on("data", (data) => (output += data.toString()));
+
+        let max_memory = 0,
+            max_cpu = 0;
+        let interval = setInterval(
+            async () => {
+                if (child.pid && child.killed === false && !options.light) {
+                    try {
+                        const stats = await pidusage(child.pid);
+                        const mem = Math.ceil(stats.memory / 1024 / 1024);
+
+                        if (mem > max_memory) {
+                            max_memory = mem;
+                        }
+
+                        if (stats.cpu > max_cpu) {
+                            max_cpu = stats.cpu;
+                        }
+
+                        if (options.memory && mem > options.memory) {
+                            child.kill();
+                            reject(`Memory Usage Exceeded (${mem} MB > ${options.memory} MB)`);
+                        }
+                    } catch {}
+                } else {
+                    clearInterval(interval);
+                }
+            },
+            options.interval && options.interval > 0 ? options.interval : 200,
+        );
+
+        child.on("error", reject);
+        child.on("exit", (code) => {
+            interval && clearInterval(interval);
+            const time = Date.now() - start_time;
+            return code === 0
+                ? resolve({ output, time, memory: max_memory, cpu: max_cpu })
+                : reject(output);
+        });
+
+        if (options.input) {
+            child.stdin?.write(options.input);
+            child.stdin?.end();
+        }
+    });
 }
