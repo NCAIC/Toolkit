@@ -50,6 +50,8 @@ program
     .command("run")
     .description("run a competition")
     .option("-c, --config <path>", "path to the config file", "config.yml")
+    .option("-p, --port <port>", "port to run the server on", parseInt, 52022)
+    .option("-e, --expose [token]", "expose a wss tunnel", "")
     .option(
         "-o, --output <path>",
         "path to the output file",

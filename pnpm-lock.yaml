@@ -5,6 +5,7 @@ specifiers:
   '@types/js-yaml': ^4.0.5
   '@types/pidusage': ^2.0.2
   '@types/ws': ^8.5.3
+  cloudflared: ^0.1.1
   commander: ^9.3.0
   esno: ^0.16.3
   js-yaml: ^4.1.0
@@ -16,6 +17,7 @@ specifiers:
   yup: ^0.32.11
 
 dependencies:
+  cloudflared: 0.1.1
   commander: 9.3.0
   js-yaml: 4.1.0
   pidusage: 3.0.0
@@ -488,6 +490,12 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /cloudflared/0.1.1:
+    resolution: {integrity: sha512-F4ZhvLVovgWXUkdFieMTcSK43235bpDKWMpfay16xtrxLNicEb4JKnLnqeOjrGkjVuyiIBnzhZVCLZHl4KWEJA==}
+    hasBin: true
+    requiresBuild: true
+    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
