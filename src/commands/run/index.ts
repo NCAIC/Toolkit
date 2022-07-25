@@ -53,7 +53,7 @@ export default async function run(opts: OptionValues, cmd: Command) {
 
     let server_tunnel: ReturnType<typeof tunnel> | undefined;
     if (opts.expose) {
-        server_tunnel = tunnel({ url: `http://localhost:${port}` });
+        server_tunnel = tunnel({ "--url": `http://localhost:${port}` });
         const url = await server_tunnel.url;
         console.log(`Establishing Secure Tunnel ...`);
         const connections = await Promise.all(server_tunnel.connections);
