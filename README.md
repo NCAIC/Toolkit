@@ -50,6 +50,20 @@ You can run command like this:
 docker run --rm jacoblincool/ncaic check
 ```
 
+If you want to run the local server, you will need to bind both volume and port.
+
+```sh
+docker run --rm -v "$(pwd)/config.yml:/app/config.yml" -p 52022:52022 -it jacoblincool/ncaic run
+```
+
+or using `-e` to expose a secure tunnel.
+
+```sh
+docker run --rm -v "$(pwd)/config.yml:/app/config.yml" -it jacoblincool/ncaic run -e
+```
+
+Understand what `-v` and `-p` do: <https://docs.docker.com/engine/reference/commandline/run/#options>
+
 > Note: Images are hosted on Docker Hub: [jacoblincool/ncaic](https://hub.docker.com/r/jacoblincool/ncaic/)
 
 ## Commands
