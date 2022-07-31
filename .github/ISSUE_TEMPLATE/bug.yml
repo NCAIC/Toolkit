@@ -1,0 +1,86 @@
+name: "Bug Report"
+description: Report an issue of NCAIC Toolkit
+labels: [bug]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to make a bug report!
+        Please feel free to include any information you think would be helpful.
+
+        If there are some sensitive but necessary information, you can contact `contact@ncaic.cc` for help.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Please provide a detailed description to tell us what the bug is. Also tell us what is the expected behavior you think.
+      placeholder: When I am going to ... by using ..., the "..." error happens. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Please provide a step-by-step [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) of the bug. It helps us to efficiently track down the bug.
+      placeholder: |
+        1. ... 
+        2. ... 
+        3. ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: ncaic-check
+    attributes:
+      label: System Informations
+      description: Please run and paste the result of `ncaic check`
+      placeholder: |
+        Checking for language support ...
+          JavaScript : OK (node 18.7.0)
+          TypeScript : OK (node 18.7.0, esbuild 0.14.49)
+                  C : OK (gcc 10.3.0)
+                C++ : OK (g++ 10.3.0)
+              Python : OK (python 3.10.5)
+                  Go : OK (go 1.17.1)
+                Rust : OK (cargo 1.56.0)
+    validations:
+      required: true
+
+  - type: textarea
+    id: config-content
+    attributes:
+      label: Config File
+      description: If the issue is related with the config file, please paste the content of the config file.
+      placeholder: |
+        title: 測試模式 Test Mode
+        teams:
+            Team A:
+                source: "rand.py"
+                color: "#1d4ed8"
+            Team B:
+                source: "rand.py"
+                color: "#e11d48"
+        delay:
+            step: 200
+            set: 2000
+        competition:
+            rule: double-sided
+            matches:
+                - type: empty
+                - type: random
+                  count: 4
+                - type: random
+                  count: 8
+                  ext: true
+            timeout:
+                step: 999999999
+                set: 999999999
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: Thank you for the bug report! We will try to investigate the bug as soon as possible.
