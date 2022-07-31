@@ -21,23 +21,12 @@ body:
       required: true
 
   - type: textarea
-    id: reproduction
-    attributes:
-      label: Reproduction
-      description: Please provide a step-by-step [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) of the bug. It helps us to efficiently track down the bug.
-      placeholder: |
-        1. ... 
-        2. ... 
-        3. ...
-    validations:
-      required: false
-
-  - type: textarea
-    id: ncaic-check
+    id: ncaic-infomation
     attributes:
       label: System Informations
-      description: Please run and paste the result of `ncaic check`
+      description: Please run and paste the result of `ncaic -V` and `ncaic check`
       placeholder: |
+        ncaic 0.5.2
         Checking for language support ...
           JavaScript : OK (node 18.7.0)
           TypeScript : OK (node 18.7.0, esbuild 0.14.49)
@@ -48,6 +37,18 @@ body:
                 Rust : OK (cargo 1.56.0)
     validations:
       required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Please provide a step-by-step [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) of the bug. It helps us to efficiently track down the bug.
+      placeholder: |
+        1. ... 
+        2. ... 
+        3. ...
+    validations:
+      required: false
 
   - type: textarea
     id: config-content
